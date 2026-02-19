@@ -1,14 +1,20 @@
-####StageBuild##########
+# On utilise une image Node.js (beaucoup plus légère)
+FROM node:18-alpine
 
-FROM maven:3.9.11-amazoncorretto-8 
+# On définit le dossier de travail
+WORKDIR /app
 
-WORKDIR  /app
+# On copie le fichier des dépendances
+COPY package.json ./
 
+# On installe les dépendances (l'équivalent de mvn install)
+RUN npm install
+
+# On copie tout le reste du code (app.js, etc.)
 COPY . .
 
-RUN mvn clean install package 
+# On expose le port utilisé par ton app.js (généralement 3000)
+EXPOSE 3000
 
-#######StageRUN##########
-FROM tomcat:9.0.112-jdk17-corretto-al2
-
-COPY --from=0 /app/target/myapp-g20.war   /usr/local/tomcat/webapps/myapp.war
+# On lance l'application
+CMD ["node", "app.js"]
