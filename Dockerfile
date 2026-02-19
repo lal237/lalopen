@@ -1,12 +1,14 @@
-FROM node:18
+####StageBuild##########
 
-WORKDIR /usr/src/app
+FROM maven:3.9.11-amazoncorretto-8 
 
-COPY package*.json ./
-RUN npm install
+WORKDIR  /app
 
 COPY . .
 
-EXPOSE 3000
+RUN mvn clean install package 
 
-CMD [ "npm", "start" ]
+#######StageRUN##########
+FROM tomcat:9.0.112-jdk17-corretto-al2
+
+COPY --from=0 /app/target/myapp-g20.war   /usr/local/tomcat/webapps/myapp.war
