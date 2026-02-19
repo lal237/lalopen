@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send('Hello Devops from MyProject V4 Groupe21!!!');
+  res.send('Hello Devops from Loic groupe 22B');
 });
 
 const PORT = process.env.PORT || 3000;
